@@ -1,5 +1,3 @@
-### **Project Description (GitHub README)**
-
 # **Predicting Dementia in Adults Using Machine Learning and Neural Networks**
 
 This project addresses the challenge of predicting dementia in adults using a dataset rich in clinical and health-related features. Various Machine Learning approaches and a neural network built with PyTorch are explored to analyze and optimize the classification performance, particularly considering the complexity of an imbalanced minority class.
