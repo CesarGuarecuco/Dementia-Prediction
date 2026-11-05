@@ -1,104 +1,47 @@
-# **Predicting Dementia in Adults Using Machine Learning and Neural Networks**
+# Predicción de demencia en adultos con machine learning
 
-This project addresses the challenge of predicting dementia in adults using a dataset (KAGGLE) rich in clinical and health-related features. Various Machine Learning approaches and a neural network built with PyTorch are explored to analyze and optimize the classification performance, particularly considering the complexity of an imbalanced minority class.
+[![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/CesarGuarecuco/Dementia-Prediction/blob/main/prediccion_demencia.ipynb) [![Ver en nbviewer](https://img.shields.io/badge/ver%20en-nbviewer-orange)](https://nbviewer.org/github/CesarGuarecuco/Dementia-Prediction/blob/main/prediccion_demencia.ipynb)
 
----
+Proyecto académico (2024). Predice si un adulto tiene demencia a partir de variables clínicas y de pruebas cognitivas. El reto principal es el desbalance: solo 7% de los pacientes tiene demencia, así que un modelo que siempre dice "no" ya acierta 93%.
 
-## **Project Contents**
-1. **Exploratory Data Analysis (EDA):**
-   - Descriptive and visual analysis of the dataset variables.
-   - Handling missing values (NaN) and analyzing distributions.
-   - Key findings:
-     - **Imbalanced classes:** Most patients do not have dementia, impacting model performance.
-     - **Key variables:** `EF`, `PS`, `Global`, and SVD scores require scaling and are crucial predictors.
-     - **Special encodings:** Variables like `smoking` need specific handling in models.
+## Resultado
 
-2. **Clustering:**
-   - Using the elbow method to determine the optimal number of clusters (3 and 4).
-   - Comparative analysis:
-     - **3 Clusters:** Offer a simpler overview of patterns.
-     - **4 Clusters:** Capture more detailed subgroups.
+Ningún modelo detecta bien la clase minoritaria, y el notebook lo muestra con las métricas correctas en vez de quedarse con la exactitud.
 
-3. **Machine Learning Predictive Models:**
-   - Training models such as:
-     - **Random Forest**
-     - **AdaBoost**
-     - **Extra Trees**
-     - **SVC**
-     - **XGBoost**
-   - Preprocessing:
-     - Scaling with `MinMaxScaler`.
-     - Balancing classes using SMOTE to mitigate imbalance.
-   - Evaluation:
-     - Accuracy, F1-Score, Precision, Recall, and confusion matrix analysis.
+| Modelo | Exactitud | Recall (demencia) | F1 (demencia) |
+| --- | --- | --- | --- |
+| Extra Trees | **94%** | 25% | **0,36** |
+| SVC | 88% | 50% | **0,36** |
+| Random Forest | 91% | 25% | 0,27 |
+| AdaBoost | 62% | **88%** | 0,24 |
+| Red neuronal (PyTorch) | 91% | 13% | 0,20 |
+| XGBoost | 90% | 13% | 0,14 |
 
-4. **Neural Network with PyTorch:**
-   - Design of a neural network with:
-     - **Dense layers** and ReLU activation functions.
-     - **Regularization:** Dropout to prevent overfitting.
-     - **Optimization:** Adam optimizer with automated learning rate reduction (`ReduceLROnPlateau`).
-   - Early stopping implementation to prevent unnecessary training.
-   - Final evaluation of the model.
+Cómo leerlo: Extra Trees es el más preciso en general, pero AdaBoost encuentra 7 de los 8 casos de demencia a cambio de muchas falsas alarmas. Para un tamizaje, donde lo grave es no detectar un caso, AdaBoost es la mejor opción. El conjunto de prueba tiene solo 8 casos positivos, así que estas cifras son orientativas.
 
-5. **Model Comparison:**
-   - **Key results:**
-     - **Extra Trees:** Best overall accuracy (94.02%).
-     - **SVC:** Best balance between precision and recall (88.03% accuracy and 0.50 recall for the minority class).
-     - **AdaBoost:** Highest recall for the minority class (0.88) at the cost of precision and overall accuracy.
+![Matriz de confusión de Extra Trees](images/matriz_extra_trees.png)
 
----
+## Qué incluye el notebook
 
-## **Dataset**
-The dataset includes clinical, cognitive, and MRI variables from studies conducted on adults. Key fields:
-- **Demographics:** Age, gender, years of education.
-- **Clinical:** Diabetes, hypertension, smoking status.
-- **Cognitive:** Executive Function (EF), Processing Speed (PS), Global cognitive score.
-- **MRI:** Fazekas scores, lacune count, and SVD scores.
+1. Análisis exploratorio y tratamiento de valores faltantes.
+2. Agrupamiento con K-Means (método del codo, 3 y 4 grupos, visualización con PCA).
+3. Escalado con MinMaxScaler y balanceo de clases con SMOTE.
+4. Random Forest, Extra Trees, AdaBoost, SVC, XGBoost y una red neuronal en PyTorch.
+5. Comparación con matriz de confusión, precisión, recall y F1, y guardado de los modelos.
 
----
+![Grupos de pacientes con K-Means](images/clusters.png)
 
-## **Main Scripts**
-- `eda_and_preprocessing.py`: Data exploration and preprocessing.
-- `clustering_analysis.py`: Clustering implementation and group analysis.
-- `train_ml_models.py`: Training Machine Learning models.
-- `train_neural_network.py`: Neural network implementation and training with PyTorch.
-- `model_evaluation.py`: Comparison and visualization of model results.
+## Datos
 
----
+Dataset clínico público de Kaggle (`Dementia.csv`). No se incluye en el repositorio: déjalo junto al notebook.
 
-## **Conclusions**
-- **Recommended Model:** Extra Trees achieves the best overall accuracy while maintaining balanced performance.
-- **Alternative Approaches:**
-  - **SVC:** Ideal for scenarios requiring a balance between classes.
-  - **AdaBoost:** Excellent for maximizing the detection of the minority class.
-- **Future Work:** Explore techniques like threshold adjustment, more complex ensemble models, and additional metrics such as AUC-ROC.
+## Cómo ejecutarlo
 
----
-
-## **Requirements**
-To run this project, install the following libraries:
 ```bash
-pip install pandas numpy matplotlib seaborn scikit-learn imbalanced-learn xgboost torch torchvision
+pip install -r requirements.txt
+jupyter notebook prediccion_demencia.ipynb
 ```
 
 ---
 
-## **Execution**
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/yourusername/dementia-prediction.git
-   cd dementia-prediction
-   ```
-2. Run the main script to train and evaluate models:
-   ```bash
-   python main.py
-   ```
-
----
-
-## **Contribution**
-Contributions are welcome! Please open an issue or submit a pull request with suggestions or improvements.
-
----
-
-Let me know if there's anything else you'd like to add or customize! 😊
+¿Necesitas un análisis o un modelo como este con los datos de tu organización? [Sivax Intelligence](https://sivax-intelligent.netlify.app/) · [sivax.contacto@gmail.com](mailto:sivax.contacto@gmail.com)
